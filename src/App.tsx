@@ -1,148 +1,79 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { motion } from 'framer-motion';
+import React from 'react';
 import Hero from './components/portfolio/Hero';
 import EducationSkills from './components/portfolio/EducationSkills';
 import Projects from './components/portfolio/Projects';
 import Achievements from './components/portfolio/Achievements';
 import Dashboard from './components/Dashboard';
 
-const Starfield = () => {
-    const canvasRef = useRef<HTMLCanvasElement>(null);
-
-    useEffect(() => {
-        const canvas = canvasRef.current;
-        if (!canvas) return;
-
-        const ctx = canvas.getContext('2d');
-        if (!ctx) return;
-
-        let particles: { x: number; y: number; radius: number; vx: number; vy: number; alpha: number }[] = [];
-        let animationFrameId: number;
-
-        const resize = () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
-            initParticles();
-        };
-
-        const initParticles = () => {
-            particles = [];
-            const numParticles = Math.floor((canvas.width * canvas.height) / 10000);
-            for (let i = 0; i < numParticles; i++) {
-                particles.push({
-                    x: Math.random() * canvas.width,
-                    y: Math.random() * canvas.height,
-                    radius: Math.random() * 1.5,
-                    vx: (Math.random() - 0.5) * 0.2,
-                    vy: (Math.random() - 0.5) * 0.2,
-                    alpha: Math.random(),
-                });
-            }
-        };
-
-        const draw = () => {
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
-
-            particles.forEach(p => {
-                p.x += p.vx;
-                p.y += p.vy;
-                p.alpha += (Math.random() - 0.5) * 0.05;
-
-                if (p.alpha < 0) p.alpha = 0;
-                if (p.alpha > 1) p.alpha = 1;
-
-                if (p.x < 0) p.x = canvas.width;
-                if (p.x > canvas.width) p.x = 0;
-                if (p.y < 0) p.y = canvas.height;
-                if (p.y > canvas.height) p.y = 0;
-
-                ctx.beginPath();
-                ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${p.alpha * 0.6})`;
-                ctx.fill();
-            });
-
-            animationFrameId = requestAnimationFrame(draw);
-        };
-
-        window.addEventListener('resize', resize);
-        resize();
-        draw();
-
-        return () => {
-            window.removeEventListener('resize', resize);
-            cancelAnimationFrame(animationFrameId);
-        };
-    }, []);
-
-    return (
-        <canvas
-            ref={canvasRef}
-            className="fixed inset-0 pointer-events-none z-0 opacity-50"
-        />
-    );
-};
-
-const MouseGlow = () => {
-    const [mousePosition, setMousePosition] = useState({ x: 0, y: 0 });
-
-    useEffect(() => {
-        const updateMousePosition = (e: MouseEvent) => {
-            setMousePosition({ x: e.clientX, y: e.clientY });
-        };
-
-        window.addEventListener('mousemove', updateMousePosition);
-
-        return () => {
-            window.removeEventListener('mousemove', updateMousePosition);
-        };
-    }, []);
-
-    return (
-        <motion.div
-            className="pointer-events-none fixed inset-0 z-30 transition-opacity duration-300"
-            animate={{
-                background: `radial-gradient(600px circle at ${mousePosition.x}px ${mousePosition.y}px, rgba(29, 78, 216, 0.12), transparent 80%)`
-            }}
-            transition={{ type: "tween", ease: "backOut", duration: 0.15 }}
-        />
-    );
-};
+// stars background
+const StarsBackground = () => (
+    <div className="fixed inset-0 z-0 pointer-events-none opacity-30">
+        <svg className="absolute w-[200%] h-[200%] animate-drift" xmlns="http://www.w3.org/2000/svg">
+            <defs>
+                <pattern id="starsPattern" width="200" height="200" patternUnits="userSpaceOnUse">
+                    <circle cx="20" cy="50" r="1" fill="white" opacity="0.6" />
+                    <circle cx="150" cy="80" r="1.5" fill="white" opacity="0.4" />
+                    <circle cx="80" cy="180" r="0.8" fill="white" opacity="0.7" />
+                    <circle cx="180" cy="20" r="1" fill="white" opacity="0.3" />
+                    <circle cx="100" cy="100" r="1.2" fill="white" opacity="0.5" />
+                    <circle cx="40" cy="150" r="0.5" fill="white" opacity="0.2" />
+                </pattern>
+            </defs>
+            <rect width="100%" height="100%" fill="url(#starsPattern)" />
+        </svg>
+    </div>
+);
 
 const App = () => {
     return (
-        <div className="min-h-screen bg-black text-white relative selection:bg-primary/30 selection:text-white font-sans overflow-x-hidden">
-            <MouseGlow />
-            {/* Global Vignette/Glow Effect */}
-            <div className="fixed inset-0 z-10 pointer-events-none shadow-[inset_0_0_150px_rgba(29,78,216,0.15)]" />
+        <div className="bg-black text-white relative selection:bg-white/20 selection:text-white font-sans overflow-x-hidden">
+            <StarsBackground />
 
-            {/* Dynamic Starfield */}
-            <Starfield />
+            {/* Top Navigation - Clean & Minimal */}
+            <nav className="fixed top-0 left-0 right-0 z-50 bg-black/50 backdrop-blur-md border-b border-white/5">
+                <div className="container mx-auto px-6 h-16 flex items-center justify-between max-w-5xl">
+                    <span className="font-bold tracking-tighter text-lg text-white">KHUSHI.</span>
+                    <div className="flex gap-3 sm:gap-6 text-xs sm:text-sm font-medium text-zinc-400 overflow-x-auto no-scrollbar">
+                        <a href="#about" className="hover:text-white transition-colors">About</a>
+                        <a href="#education" className="hover:text-white transition-colors">Education</a>
+                        <a href="#projects" className="hover:text-white transition-colors">Work</a>
+                        <a href="#stats" className="hover:text-white transition-colors">Stats</a>
+                    </div>
+                </div>
+            </nav>
 
             {/* Main Content */}
-            <div className="relative z-20 container mx-auto px-4 py-8 max-w-6xl">
-                <Hero />
+            <div className="relative z-20 container mx-auto px-6 pb-20 pt-20 max-w-5xl space-y-24">
+                <section id="about">
+                    <Hero />
+                </section>
 
-                <EducationSkills />
+                <section id="education">
+                    <EducationSkills />
+                </section>
 
-                <Projects />
+                <section id="projects">
+                    <Projects />
+                </section>
 
-                <Achievements />
+                <section>
+                    <Achievements />
+                </section>
 
-                {/* LeetCode Dashboard Section */}
-                <section className="py-20 relative z-20 mt-10 border-t border-white/10">
-                    <div className="flex flex-col items-center mb-12">
-                        <h2 className="text-4xl sm:text-5xl font-extrabold tracking-tighter bg-gradient-to-br from-blue-400 via-purple-500 to-white bg-clip-text text-transparent mb-4">
-                            LeetCode Dash
-                        </h2>
-                        <p className="text-gray-400 font-medium">Live programming statistics & daily consistency</p>
+                {/* Dashboard Section */}
+                <section id="stats" className="pt-10 border-t border-border">
+                    <div className="mb-12 text-center md:text-left">
+                        <h2 className="text-3xl font-semibold tracking-tight text-white mb-2">Metrics</h2>
+                        <p className="text-zinc-400">Live programming statistics & daily consistency</p>
                     </div>
-
-                    <main className="grid grid-cols-1 lg:grid-cols-12 gap-6 relative z-10 w-full">
-                        <Dashboard />
-                    </main>
+                    <Dashboard />
                 </section>
             </div>
+
+            {/* Minimal Footer */}
+            <footer className="py-8 border-t border-border mt-auto text-center text-zinc-500 text-sm">
+                <p>© {new Date().getFullYear()} Khushi Thakur. All rights reserved.</p>
+            </footer>
         </div>
     );
 };

@@ -30,12 +30,16 @@ const RecentSolved: React.FC<RecentSolvedProps> = ({ recent }) => {
             initial={{ opacity: 0, x: 20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut", delay: 0.2 }}
-            className="glass-card p-6 flex-1 flex flex-col"
+            className="clean-card p-6 md:p-8 flex-1 flex flex-col"
         >
             <div className="flex items-center gap-3 mb-6">
-                <div className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white">
+                <motion.div
+                    whileHover={{ scale: 1.05 }}
+                    transition={{ duration: 0.2 }}
+                    className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white cursor-pointer"
+                >
                     <Activity size={20} />
-                </div>
+                </motion.div>
                 <h2 className="text-xl font-bold tracking-tight text-white">Recent Solved</h2>
             </div>
 

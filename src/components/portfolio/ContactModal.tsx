@@ -73,7 +73,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
     return createPortal(
         <AnimatePresence>
             {isOpen && (
-                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 isolate">
+                <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 isolate selection:bg-white/20 selection:text-white">
                     {/* Backdrop */}
                     <motion.div
                         initial={{ opacity: 0 }}
@@ -91,10 +91,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                         transition={{ type: "spring", duration: 0.5 }}
                         className="relative w-full max-w-lg z-10"
                     >
-                        <div className="glass-card relative overflow-hidden backdrop-blur-2xl border border-white/10 p-8 shadow-[0_0_50px_rgba(59,130,246,0.15)] bg-slate-900/80">
-                            {/* Decorative gradients */}
-                            <div className="absolute -top-20 -right-20 w-40 h-40 bg-purple-500/20 rounded-full blur-3xl pointer-events-none"></div>
-                            <div className="absolute -bottom-20 -left-20 w-40 h-40 bg-blue-500/20 rounded-full blur-3xl pointer-events-none"></div>
+                        <div className="clean-card relative overflow-hidden p-8 bg-surface/95 backdrop-blur-2xl">
 
                             {/* Close Button */}
                             <button
@@ -119,7 +116,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                                         onChange={handleChange}
                                         required
                                         placeholder="Your Name"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-medium"
+                                        className="w-full bg-white/[0.02] border border-border rounded-xl py-3 pl-10 pr-4 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:bg-white/[0.05] transition-all font-medium"
                                     />
                                 </div>
 
@@ -134,7 +131,7 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                                         onChange={handleChange}
                                         required
                                         placeholder="Your Email"
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-medium"
+                                        className="w-full bg-white/[0.02] border border-border rounded-xl py-3 pl-10 pr-4 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:bg-white/[0.05] transition-all font-medium"
                                     />
                                 </div>
 
@@ -149,14 +146,14 @@ const ContactModal: React.FC<ContactModalProps> = ({ isOpen, onClose }) => {
                                         required
                                         rows={4}
                                         placeholder="Your Message..."
-                                        className="w-full bg-white/5 border border-white/10 rounded-xl py-3 pl-10 pr-4 text-white placeholder-gray-500 focus:outline-none focus:border-primary/50 focus:bg-white/10 transition-all font-medium resize-none custom-scrollbar"
+                                        className="w-full bg-white/[0.02] border border-border rounded-xl py-3 pl-10 pr-4 text-white placeholder-zinc-500 focus:outline-none focus:border-zinc-500 focus:bg-white/[0.05] transition-all font-medium resize-none custom-scrollbar"
                                     />
                                 </div>
 
                                 <button
                                     type="submit"
                                     disabled={isSubmitting || submitStatus === 'success'}
-                                    className="mt-2 w-full bg-gradient-to-r from-blue-500 to-indigo-600 hover:from-blue-400 hover:to-indigo-500 text-white font-bold py-3 px-6 rounded-xl flex items-center justify-center gap-2 transition-all shadow-[0_0_20px_rgba(59,130,246,0.4)] hover:shadow-[0_0_30px_rgba(59,130,246,0.6)] group relative overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
+                                    className="mt-2 w-full bg-white text-black hover:bg-zinc-200 transition-colors font-medium py-3 px-6 rounded-xl flex items-center justify-center gap-2 group relative overflow-hidden disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
                                     <span className="relative z-10">
                                         {isSubmitting ? 'Sending...' : submitStatus === 'success' ? 'Message Sent!' : 'Send Message'}

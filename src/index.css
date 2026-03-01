@@ -3,19 +3,29 @@
 @tailwind utilities;
 
 @layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     background-color: theme('colors.background');
     color: white;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 }
 
 @layer utilities {
-  .glass-card {
-    @apply bg-surface backdrop-blur-xl border border-border sm:rounded-3xl rounded-2xl;
+  .clean-card {
+    @apply bg-surface border border-border rounded-2xl transition-all duration-300;
   }
 
-  .blue-glow {
-    @apply shadow-[inset_0_0_100px_rgba(59, 130, 246, 0.3)];
+  .clean-card:hover {
+    @apply bg-white/[0.02] border-white/10;
+  }
+
+  .pill-badge {
+    @apply px-3 py-1 bg-surface border border-border rounded-full text-xs font-medium text-zinc-300 transition-colors hover:text-white hover:border-zinc-600;
   }
 }
 
@@ -37,7 +47,7 @@
   animation: gradient-x 4s ease infinite;
 }
 
-/* Custom Scrollbar */
+/* Custom Minimal Scrollbar */
 ::-webkit-scrollbar {
   width: 8px;
 }
@@ -47,10 +57,20 @@
 }
 
 ::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.1);
+  background: #262626;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.2);
+  background: #404040;
+}
+
+/* Fix Webkit Autocomplete Background in Dark Mode */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #0A0A0A inset !important;
+  -webkit-text-fill-color: white !important;
+  transition: background-color 5000s ease-in-out 0s;
 }

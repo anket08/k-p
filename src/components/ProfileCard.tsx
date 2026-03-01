@@ -1,6 +1,6 @@
-import React from 'react';
-import { motion } from 'framer-motion';
-import { ExternalLink, Trophy } from 'lucide-react';
+import React, { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { ExternalLink, Link, Trophy, Award } from 'lucide-react';
 import Heatmap from './Heatmap';
 
 interface ProfileCardProps {
@@ -10,8 +10,10 @@ interface ProfileCardProps {
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({ profile, solved, calendar }) => {
+    const [isTrophyHovered, setIsTrophyHovered] = useState(false);
+    const [isLinkHovered, setIsLinkHovered] = useState(false);
+
     const totalSolved = solved.solvedProblem;
-    const totalQuestions = solved.totalQuestions; // might not exist in all wrappers, fallback to 3000
     const easy = solved.easySolved;
     const medium = solved.mediumSolved;
     const hard = solved.hardSolved;
@@ -27,12 +29,14 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, solved, calendar }) 
             initial={{ opacity: 0, x: -20 }}
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, ease: "easeOut" }}
-            className="glass-card p-6 relative overflow-hidden group hover:shadow-[0_0_40px_rgba(59,130,246,0.2)] transition-all duration-500"
+            className="clean-card p-6 md:p-8 relative overflow-hidden group"
         >
             {/* Top Header */}
             <div className="flex justify-between items-start mb-8">
                 <div className="flex items-center gap-4">
                     <motion.div
+                        onMouseEnter={() => setIsTrophyHovered(true)}
+                        onMouseLeave={() => setIsTrophyHovered(false)}
                         animate={{
                             y: [0, -4, 0],
                             boxShadow: [
@@ -42,23 +46,75 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, solved, calendar }) 
                             ]
                         }}
                         transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
-                        className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-2 text-primary"
+                        className="w-12 h-12 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center p-2 text-primary cursor-pointer relative"
                     >
-                        <Trophy size={24} />
+                        <AnimatePresence mode="wait">
+                            {isTrophyHovered ? (
+                                <motion.div
+                                    key="hover"
+                                    initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                                    animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                    exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute"
+                                >
+                                    <Award size={24} />
+                                </motion.div>
+                            ) : (
+                                <motion.div
+                                    key="default"
+                                    initial={{ opacity: 0, scale: 0.8 }}
+                                    animate={{ opacity: 1, scale: 1 }}
+                                    exit={{ opacity: 0, scale: 0.8 }}
+                                    transition={{ duration: 0.2 }}
+                                    className="absolute"
+                                >
+                                    <Trophy size={24} />
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
                     </motion.div>
                     <div>
                         <h2 className="text-xl font-bold tracking-tight text-white mb-1 group-hover:text-primary transition-colors">{profile.username}</h2>
                         <p className="text-sm text-gray-400 font-medium tracking-wide">Rank {profile.ranking.toLocaleString()}</p>
                     </div>
                 </div>
-                <a
+                <motion.a
+                    onMouseEnter={() => setIsLinkHovered(true)}
+                    onMouseLeave={() => setIsLinkHovered(false)}
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
                     href={`https://leetcode.com/${profile.username}`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="w-10 h-10 rounded-full bg-white/5 hover:bg-primary/20 hover:text-primary transition-colors flex items-center justify-center border border-white/10 hover:border-primary/50"
+                    className="w-10 h-10 rounded-full bg-white/5 hover:bg-primary/20 transition-colors flex items-center justify-center border border-white/10 hover:border-primary/50 relative cursor-pointer"
                 >
-                    <ExternalLink size={18} />
-                </a>
+                    <AnimatePresence mode="wait">
+                        {isLinkHovered ? (
+                            <motion.div
+                                key="hover"
+                                initial={{ opacity: 0, scale: 0.8, rotate: -10 }}
+                                animate={{ opacity: 1, scale: 1, rotate: 0 }}
+                                exit={{ opacity: 0, scale: 0.8, rotate: 10 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute"
+                            >
+                                <Link size={18} />
+                            </motion.div>
+                        ) : (
+                            <motion.div
+                                key="default"
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0, scale: 0.8 }}
+                                transition={{ duration: 0.2 }}
+                                className="absolute"
+                            >
+                                <ExternalLink size={18} />
+                            </motion.div>
+                        )}
+                    </AnimatePresence>
+                </motion.a>
             </div>
 
             {/* Circular Progress */}
@@ -109,7 +165,7 @@ const ProfileCard: React.FC<ProfileCardProps> = ({ profile, solved, calendar }) 
                     <span className="text-lg font-bold text-[#00b8a3] mb-1">{easy}</span>
                     <span className="text-xs font-medium text-gray-500 uppercase">Easy</span>
                 </div>
-                <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 flex flex-col items-center justify-center shadow-[inset_0_0_20px_rgba(255,192,30,0.03)] border-b-[#ffc01e]/20">
+                <div className="bg-white/[0.02] border border-white/[0.05] rounded-xl p-3 flex flex-col items-center justify-center">
                     <span className="text-lg font-bold text-[#ffc01e] mb-1">{medium}</span>
                     <span className="text-xs font-medium text-gray-500 uppercase">Med</span>
                 </div>

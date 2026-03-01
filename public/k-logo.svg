@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <linearGradient id="grad1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#3b82f6" />
+      <stop offset="100%" stop-color="#06b6d4" />
+    </linearGradient>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="1" result="coloredBlur"/>
+      <feMerge>
+        <feMergeNode in="coloredBlur"/>
+        <feMergeNode in="SourceGraphic"/>
+      </feMerge>
+    </filter>
+  </defs>
+  <rect width="28" height="28" x="2" y="2" rx="6" fill="#000" stroke="url(#grad1)" stroke-width="1.5" filter="url(#glow)"/>
+  <text x="16" y="22" font-family="system-ui, sans-serif" font-size="20" font-weight="900" fill="url(#grad1)" text-anchor="middle" filter="url(#glow)">K</text>
+</svg>

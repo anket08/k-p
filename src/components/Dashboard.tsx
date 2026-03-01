@@ -1,10 +1,6 @@
 import React, { useEffect, useState } from 'react';
-import { motion } from 'framer-motion';
-import { request } from 'graphql-request';
 import ProfileCard from './ProfileCard';
 import RecentSolved from './RecentSolved';
-import Heatmap from './Heatmap';
-import { leetcodeQuery } from '../lib/leetcode-query';
 
 export interface LeetCodeData {
     profile: any;
@@ -15,7 +11,6 @@ export interface LeetCodeData {
 
 const USERNAME = 'Khushi112004';
 // Use a generic CORS proxy since LeetCode blocks browser requests
-const API_URL = 'https://cors-anywhere.herokuapp.com/https://leetcode.com/graphql';
 // Alternative if cors-anywhere is blocked: we can try another wrapper, but alfa is rate limited.
 // A better robust wrapper is leetcode-stats-api which we can try again, or just use another proxy.
 const BACKUP_API = 'https://leetcode-api-faisalshohag.vercel.app/Khushi112004';
@@ -96,9 +91,9 @@ const Dashboard = () => {
 
     if (loading) {
         return (
-            <div className="lg:col-span-12 glass-card p-12 flex flex-col items-center justify-center min-h-[500px]">
-                <div className="w-16 h-16 border-4 border-primary border-t-transparent rounded-full animate-spin mb-4"></div>
-                <p className="text-gray-400 animate-pulse font-medium tracking-wide">Syncing with LeetCode...</p>
+            <div className="lg:col-span-12 clean-card p-12 flex flex-col items-center justify-center min-h-[500px]">
+                <div className="w-16 h-16 border-4 border-white border-t-transparent rounded-full animate-spin mb-4"></div>
+                <p className="text-zinc-500 animate-pulse font-medium tracking-wide">Syncing with LeetCode...</p>
             </div>
         );
     }
